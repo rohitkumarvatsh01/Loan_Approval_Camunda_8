@@ -23,4 +23,4 @@ This project implements a loan application system that checks the eligibility of
 ### Prerequisites
 - Java 17 or higher
 - Maven
-- A running instance of a Camunda Zeebe broker
+- Camunda Zeebe broker
