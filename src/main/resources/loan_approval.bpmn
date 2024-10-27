@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:zeebe="http://camunda.org/schema/zeebe/1.0"
+                  id="Definitions_loanApproval"
+                  targetNamespace="http://bpmn.io/schema/bpmn"
+                  exporter="Camunda Modeler"
+                  exporterVersion="5.16.0">
+    <bpmn:process id="loan-approval" name="Loan Approval Process" isExecutable="true">
+        <bpmn:startEvent id="StartEventLoanApplicationReceived" name="Loan Application Received">
+            <bpmn:outgoing>Flow_loanScoring</bpmn:outgoing>
+        </bpmn:startEvent>
+
+        <bpmn:serviceTask id="TaskScoreApplicant" name="Score Applicant">
+            <bpmn:extensionElements>
+                <zeebe:taskDefinition type="scoreApplicant"/>
+            </bpmn:extensionElements>
+            <bpmn:incoming>Flow_loanScoring</bpmn:incoming>
+            <bpmn:outgoing>Flow_approveTask</bpmn:outgoing>
+        </bpmn:serviceTask>
+
+        <bpmn:userTask id="TaskApproveLoan" name="Approve Loan Application">
+            <bpmn:extensionElements>
+                <zeebe:taskDefinition type="userTask"/>
+                <zeebe:userTaskForm id="userTaskForm_loanApproval">
+                    {
+                        "components": [
+                            {
+                                "label": "Applicant Name",
+                                "type": "textfield",
+                                "id": "Field_applicantName",
+                                "key": "applicantName",
+                                "description": "Enter the applicant's name",
+                                "disabled": false
+                            },
+                            {
+                                "label": "Loan Amount",
+                                "type": "textfield",
+                                "id": "Field_loanAmount",
+                                "key": "loanAmount",
+                                "description": "Enter the loan amount requested",
+                                "disabled": false
+                            },
+                            {
+                                "label": "Credit Score",
+                                "type": "textfield",
+                                "id": "Field_creditScore",
+                                "key": "creditScore",
+                                "description": "Enter the applicant's credit score",
+                                "disabled": false
+                            }
+                        ],
+                        "type": "default",
+                        "id": "Form_loanApprovalForm",
+                        "executionPlatform": "Camunda Cloud",
+                        "executionPlatformVersion": "8.0.0",
+                        "exporter": {
+                            "name": "Camunda Modeler",
+                            "version": "5.2.0"
+                        },
+                        "schemaVersion": 4
+                    }
+                </zeebe:userTaskForm>
+            </bpmn:extensionElements>
+            <bpmn:incoming>Flow_approveTask</bpmn:incoming>
+            <bpmn:outgoing>Flow_approvalDecision</bpmn:outgoing>
+        </bpmn:userTask>
+
+        <bpmn:exclusiveGateway id="GatewayLoanApproved" name="Loan Approved?">
+            <bpmn:incoming>Flow_approvalDecision</bpmn:incoming>
+            <bpmn:outgoing>Flow_LoanRejected</bpmn:outgoing>
+            <bpmn:outgoing>Flow_LoanApproved</bpmn:outgoing>
+        </bpmn:exclusiveGateway>
+
+        <bpmn:endEvent id="EndEventLoanRejected" name="Loan Application Rejected">
+            <bpmn:incoming>Flow_LoanRejected</bpmn:incoming>
+        </bpmn:endEvent>
+
+        <bpmn:sequenceFlow id="Flow_LoanRejected" name="No" sourceRef="GatewayLoanApproved" targetRef="EndEventLoanRejected">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=(creditScore &lt; 700)</bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+
+        <bpmn:endEvent id="EndEventLoanApproved" name="Loan Application Approved">
+            <bpmn:incoming>Flow_LoanApproved</bpmn:incoming>
+        </bpmn:endEvent>
+
+        <bpmn:sequenceFlow id="Flow_LoanApproved" name="Yes" sourceRef="GatewayLoanApproved" targetRef="EndEventLoanApproved">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=(creditScore &gt;= 700)</bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+
+        <bpmn:sequenceFlow id="Flow_loanScoring" sourceRef="StartEventLoanApplicationReceived" targetRef="TaskScoreApplicant"/>
+        <bpmn:sequenceFlow id="Flow_approveTask" sourceRef="TaskScoreApplicant" targetRef="TaskApproveLoan"/>
+        <bpmn:sequenceFlow id="Flow_approvalDecision" sourceRef="TaskApproveLoan" targetRef="GatewayLoanApproved"/>
+    </bpmn:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_loanApproval">
+        <bpmndi:BPMNPlane id="BPMNPlane_loanApproval" bpmnElement="loan-approval">
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>
