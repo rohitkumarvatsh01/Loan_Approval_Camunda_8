@@ -28,12 +28,6 @@
 	</dependencyManagement>
 
 	<dependencies>
-		<!-- Spring Boot WebFlux -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webflux</artifactId>
-		</dependency>
-
 		<!-- Camunda Zeebe Client -->
 		<dependency>
 			<groupId>io.camunda</groupId>
@@ -48,7 +42,7 @@
 			<version>${zeebe.version}</version>
 		</dependency>
 
-		<!-- Spring Data JPA for database interaction -->
+		<!-- Spring Data JPA -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -61,7 +55,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Spring Boot Starter Test Dependencies -->
+		<!-- Spring Boot Starter Test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -74,19 +68,12 @@
 			</exclusions>
 		</dependency>
 
-		<!-- Camunda Spring Test Dependencies -->
+		<!-- Camunda Spring Test -->
 		<dependency>
 			<groupId>io.camunda.spring</groupId>
 			<artifactId>spring-boot-starter-camunda-test</artifactId>
 			<version>${zeebe.version}</version>
 			<scope>test</scope>
-		</dependency>
-
-		<!-- WebJars for jQuery (optional for frontend support) -->
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>jquery</artifactId>
-			<version>3.6.1</version>
 		</dependency>
 	</dependencies>
 
@@ -100,7 +87,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
-			<!-- Exec Maven Plugin to specify the main class for execution -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
