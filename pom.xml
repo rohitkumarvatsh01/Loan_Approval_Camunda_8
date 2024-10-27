@@ -105,7 +105,7 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.nwm.LoanApprovalApplication</mainClass>
+					<mainClass>com.loan.LoanApplication</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
