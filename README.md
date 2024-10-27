@@ -1,4 +1,4 @@
-### Loan Approval Application Camunda 8
+# Loan Approval Application Camunda 8
 
 ## Overview
 This project implements a loan application system that checks the eligibility of applicants and initiates a loan approval process using Camunda Zeebe for workflow management.
