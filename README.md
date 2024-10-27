@@ -1,3 +1,4 @@
 ### Loan Approval Camunda 8
 
-![Screenshot 2024-10-28 001449](https://github.com/user-attachments/assets/3ef20ea2-ae02-4f1a-9dc6-1262a9b42174)
+
+![Screenshot 2024-10-28 004353](https://github.com/user-attachments/assets/b25575a8-f49b-4940-abc5-aea3a2dc6e83)
